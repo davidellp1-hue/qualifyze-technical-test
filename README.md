@@ -3,6 +3,15 @@
 ## Objective
 Automate high-value UI scenarios of [SauceDemo](https://www.saucedemo.com/) as fast, repeatable end-to-end checks on Chromium, Firefox and WebKit. Each automated test traces to a manual test case (`TC-<FEATURE>-NNN`).
 
+## Scope
+- **Scenarios:** 3 end-to-end UI scenarios, the ones the exercise asks to automate (see [Automated scenarios](#automated-scenarios)):
+  - login with `standard_user`;
+  - purchase with `standard_user` (add 2 products, remove 1, checkout, finish);
+  - login with `locked_out_user` (blocked user, products page not accessible).
+- **Browsers:** Chromium, Firefox and WebKit, desktop viewport.
+- **Environment:** the public site `https://www.saucedemo.com` (configurable with `BASE_URL`).
+- **Out of scope:** API tests, mobile viewports, visual and performance testing, and the other users and test cases of the test design, which are covered by manual testing.
+
 ## Tech stack
 - **Language:** TypeScript on Node.js
 - **Framework / runner:** Playwright Test
@@ -63,7 +72,9 @@ The only setting is the site under test: `BASE_URL` (default `https://www.sauced
 | `npm test -- --grep @login` | Run one feature (`@login`, `@purchase`) |
 | `npm test -- --grep "TC-LOGIN-001"` | Run a single test case |
 | `npm test -- --project=firefox` | Run on one browser |
-| `npm run docker:test -- --project=webkit` | Same flags, inside Docker |
+| `npm run docker:build` | Build the Docker image (re-run after changing the code) |
+| `npm run docker:test` | Run all tests inside Docker and copy the reports to the project root |
+| `npm run docker:test -- --project=webkit` | Same flags as `npm test`, inside Docker |
 | `npm test -- --headed` / `npm test -- --ui` | Run with a visible browser / in Playwright UI mode |
 | `npm run typecheck` / `npm run lint` | Type check / lint (`npm run lint:fix` to auto-fix) |
 | `npm run clean:reports` | Delete all reports and test artifacts |

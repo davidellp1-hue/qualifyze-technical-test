@@ -125,7 +125,7 @@ Image `mcr.microsoft.com/playwright:v<@playwright/test version>-noble` (check th
 `node_modules/`, `package-lock.json`, `test-results/`, `playwright-report/`, `allure-results/`, `allure-report/`.
 
 ### `README.md` (concise, English)
-Objective · Tech stack (with the "Tested with" versions) · Project structure · Prerequisites · Setup · Configuration · Usage · Reports · Automated scenarios (Test case | Title | Priority) · Conventions · AI-assisted development. Only document scripts and files that exist.
+Objective · Scope (scenarios, browsers, environment, out of scope) · Tech stack (with the "Tested with" versions) · Project structure · Prerequisites · Setup · Configuration · Usage · Reports · Automated scenarios (Test case | Title | Priority) · Conventions · AI-assisted development. Only document scripts and files that exist.
 
 ## Verify before reporting done
 1. `npm run typecheck`, `npm run lint` and `npx prettier --check .` pass.
