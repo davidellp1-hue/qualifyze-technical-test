@@ -37,7 +37,7 @@ src/
 ## Conventions
 - **Features** (folder -> code used in test IDs): `login` -> `LOGIN`, `purchase` -> `CHK`.
 - **Test title**: `[TC-<FEATURE>-NNN] <exact test case title>`; a Scenario Outline row appends ` - <example value>`.
-- **No tags**: tests are selected by test case ID (`--grep TC-LOGIN-001`), folder or browser. Priority (High/Medium/Low, never P1/P2) lives in the manual test case and the README table.
+- **Tags**: one feature tag per spec, on its `test.describe` (`@login`, `@purchase`), so every test inherits it. No other tags. Tests are selected by tag (`--grep @login`), test case ID (`--grep TC-LOGIN-001`), folder or browser. Priority (High/Medium/Low, never P1/P2) lives in the manual test case and the README table.
 - **Users**: password `secret_sauce` for all; `standard_user` is the functional oracle; `locked_out_user` is the blocked user.
 - **Browsers**: every test runs on Chromium, Firefox and WebKit (desktop viewport). Docker (official Playwright image) runs all three on any host.
 - **Reporters**: list, html, Allure 3.

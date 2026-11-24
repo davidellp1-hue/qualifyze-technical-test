@@ -1,7 +1,7 @@
 import { test } from "../../../common/fixtures";
 import { User } from "../../../common/data/users";
 
-test.describe("Login", () => {
+test.describe("Login", { tag: "@login" }, () => {
   test("[TC-LOGIN-001] Login with each accepted user - standard_user", async ({
     loginPage,
     inventoryPage,

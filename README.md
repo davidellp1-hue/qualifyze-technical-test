@@ -60,6 +60,7 @@ The only setting is the site under test: `BASE_URL` (default `https://www.sauced
 | Command | Description |
 |---|---|
 | `npm test` | Run all tests on the three browsers |
+| `npm test -- --grep @login` | Run one feature (`@login`, `@purchase`) |
 | `npm test -- --grep "TC-LOGIN-001"` | Run a single test case |
 | `npm test -- --project=firefox` | Run on one browser |
 | `npm run docker:test -- --project=webkit` | Same flags, inside Docker |
@@ -88,6 +89,7 @@ Every run writes to the project root:
 - **Locators:** `data-test` attributes via `getByTestId`, then roles and visible text. No XPath, no hard waits; only web-first assertions.
 - **Specs** only chain page object calls; every test is independent (fresh browser context, so the cart starts empty).
 - **Title:** `[TC-<FEATURE>-NNN] <test case title>`, so every test traces to its manual test case.
+- **Tags:** one feature tag per spec (`@login`, `@purchase`), set on its `test.describe`.
 - **Timeout and retries:** 40 s per test (Playwright's default is 30 s) and `retries: 1`, because the site under test is public and its response time varies. A test that only passes on the retry is reported as *flaky*, so it stays visible.
 
 ## AI-assisted development

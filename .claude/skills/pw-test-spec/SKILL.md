@@ -44,7 +44,7 @@ export const test = base.extend<Fixtures>({
 import { test } from "../../../common/fixtures";
 import { User } from "../../../common/data/users";
 
-test.describe("Login", () => {
+test.describe("Login", { tag: "@login" }, () => {
   test("[TC-LOGIN-001] Login with each accepted user - standard_user", async ({
     loginPage,
     inventoryPage,
@@ -59,7 +59,7 @@ test.describe("Login", () => {
 
 ## Rules
 - **Title**: `[TC-<FEATURE>-NNN] <exact title of the test case>`; Examples rows append ` - <value>`.
-- **No tags**: tests are selected by test case ID, folder or browser.
+- **Tags**: only the feature tag, once, on the `test.describe` (`{ tag: "@login" }`); never on individual tests.
 - **Never** `test.skip`, `test.fail`, `test.fixme` or weakened expectations to get a green run: if the product misbehaves, the test fails and the user decides.
 - **Fidelity**: the spec follows the Gherkin line by line; every `Then`/`And` becomes a `then...` call. A line that combines two checks becomes two calls (e.g. "both buttons show Remove and the cart badge shows 2" -> `inventoryPage.thenTheButtonsShowRemove(...)` + `headerComponent.thenTheCartBadgeShows(2)`). Don't add checks the test case doesn't have: if the user wants an extra check, the user updates the manual test case first, then it is automated. Every check must be able to fail: if a step can't fail at that point in the flow (e.g. "no login error" after the redirect already happened), point it out and agree with the user before dropping it. If a check is impossible or ambiguous, stop and ask.
 - **Spec body**: only fixture method calls. No locators, no `expect`, no `page.*`, no loops other than the Examples loop, no conditionals.

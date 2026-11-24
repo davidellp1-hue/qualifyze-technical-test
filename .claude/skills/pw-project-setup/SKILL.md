@@ -103,7 +103,7 @@ Fixtures only construct page objects; they never navigate or act. Add one entry 
 | `docker:build` | `docker build -t saucedemo-ui-tests .` |
 | `docker:test` | `sh scripts/docker-test.sh`: runs the image (no shared folders), then copies `test-results/`, `playwright-report/` and `allure-results/` out with `docker cp`, so it works with Docker and rootless Podman and the files belong to the host user. Extra flags after `--` reach Playwright; the exit code is the test run's. |
 
-Filters and modes are Playwright flags after `--` (`--grep TC-LOGIN-001`, `--project=firefox`, `--headed`, `--ui`); don't add a script per flag. `engines`: `node >= 22.18.0` (required by Allure 3).
+Filters and modes are Playwright flags after `--` (`--grep @login`, `--grep TC-LOGIN-001`, `--project=firefox`, `--headed`, `--ui`); don't add a script per flag. `engines`: `node >= 22.18.0` (required by Allure 3).
 
 ### Dependencies (all dev)
 `@playwright/test`, `typescript`, `@types/node` (major = minimum Node in `engines`), `allure-playwright`, `allure` (Allure 3: pure Node, no Java), `eslint`, `typescript-eslint`, `eslint-plugin-playwright`, `eslint-plugin-prettier`, `eslint-config-prettier`, `prettier`.

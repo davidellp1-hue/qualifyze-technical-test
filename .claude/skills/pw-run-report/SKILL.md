@@ -12,7 +12,7 @@ Read `CLAUDE.md` first.
 |---|---|
 | Everything, three browsers | `npm test` |
 | Everything, in Docker | `npm run docker:build` then `npm run docker:test` (flags after `--`) |
-| By folder | `npm test -- src/features/login` |
+| By feature | `npm test -- --grep @login` |
 | One test case | `npm test -- --grep "TC-CHK-001"` |
 | One browser | `npm test -- --project=chromium` |
 | Stability check | `npm test -- --grep "TC-CHK-001" --repeat-each=3` |

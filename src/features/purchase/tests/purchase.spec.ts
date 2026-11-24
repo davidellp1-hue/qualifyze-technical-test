@@ -2,7 +2,7 @@ import { test } from "../../../common/fixtures";
 import { User } from "../../../common/data/users";
 import { Products } from "../../../common/data/products";
 
-test.describe("Purchase", () => {
+test.describe("Purchase", { tag: "@purchase" }, () => {
   test("[TC-CHK-001] End-to-end purchase: add 2, remove 1, checkout, finish", async ({
     loginPage,
     inventoryPage,
