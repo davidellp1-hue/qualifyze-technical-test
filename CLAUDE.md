@@ -35,7 +35,7 @@ src/
 **KISS:** add a file, method, locator, dependency, script or option only when a current test uses it. No base classes or wrappers in advance.
 
 ## Conventions
-- **Features** (folder -> code used in test IDs): `login` -> `LOGIN`, `checkout` -> `CHK`.
+- **Features** (folder -> code used in test IDs): `login` -> `LOGIN`, `purchase` -> `CHK`.
 - **Test title**: `[TC-<FEATURE>-NNN] <exact test case title>`; a Scenario Outline row appends ` - <example value>`.
 - **No tags**: tests are selected by test case ID (`--grep TC-LOGIN-001`), folder or browser. Priority (High/Medium/Low, never P1/P2) lives in the manual test case and the README table.
 - **Users**: password `secret_sauce` for all; `standard_user` is the functional oracle; `locked_out_user` is the blocked user.

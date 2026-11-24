@@ -2,10 +2,10 @@ import { test as base } from "@playwright/test";
 import { LoginPage } from "./pages/LoginPage";
 import { InventoryPage } from "./pages/InventoryPage";
 import { HeaderComponent } from "./pages/HeaderComponent";
-import { CartPage } from "../features/checkout/pages/CartPage";
-import { CheckoutInformationPage } from "../features/checkout/pages/CheckoutInformationPage";
-import { CheckoutOverviewPage } from "../features/checkout/pages/CheckoutOverviewPage";
-import { CheckoutCompletePage } from "../features/checkout/pages/CheckoutCompletePage";
+import { CartPage } from "../features/purchase/pages/CartPage";
+import { CheckoutInformationPage } from "../features/purchase/pages/CheckoutInformationPage";
+import { CheckoutOverviewPage } from "../features/purchase/pages/CheckoutOverviewPage";
+import { CheckoutCompletePage } from "../features/purchase/pages/CheckoutCompletePage";
 
 type Fixtures = {
   loginPage: LoginPage;
