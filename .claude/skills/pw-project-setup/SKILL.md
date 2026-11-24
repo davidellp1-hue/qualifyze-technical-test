@@ -1,6 +1,6 @@
 ---
 name: pw-project-setup
-description: Scaffold and maintain the Playwright + TypeScript UI automation project for SauceDemo - folder structure, package.json scripts, tsconfig, playwright config (Chromium + Firefox, data-test ids, reporters), ESLint + Prettier, Allure 3, .gitignore and README. Use when the user asks to create/initialise the project, add or change a dependency, script, reporter, browser or config option, or update the README.
+description: Scaffold and maintain the Playwright + TypeScript UI automation project for SauceDemo - folder structure, package.json scripts, tsconfig, playwright config (Chromium + Firefox + WebKit, data-test ids, reporters), Docker, ESLint + Prettier, Allure 3, .gitignore and README. Use when the user asks to create/initialise the project, add or change a dependency, script, reporter, browser or config option, or update the README.
 ---
 
 # Playwright Project Setup
@@ -15,6 +15,8 @@ Read `CLAUDE.md` first (structure, conventions). The project is **UI only** (no 
 ├── eslint.config.mjs
 ├── .prettierrc / .prettierignore
 ├── .gitignore
+├── Dockerfile / .dockerignore    # official Playwright image, all three browsers
+├── scripts/docker-test.sh        # runs the image and copies the reports out
 ├── README.md
 ├── CLAUDE.md                     # project rules for the AI assistant
 ├── .claude/skills/               # task guides (setup, page objects, specs, run/report)
@@ -60,6 +62,7 @@ export default defineConfig({
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "webkit", use: { ...devices["Desktop Safari"] } },
   ],
 });
 ```
@@ -96,7 +99,9 @@ Fixtures only construct page objects; they never navigate or act. Add one entry 
 | `report` | `playwright show-report playwright-report` |
 | `allure:report` | `allure generate allure-results --clean -o allure-report --open` |
 | `clean:reports` | `rm -rf test-results playwright-report allure-results allure-report` |
-| `install:browsers` | `playwright install chromium firefox` (no `--with-deps`: it needs apt and fails on non-Debian hosts). Dependencies are installed separately with `npm install` (`package-lock.json` is not committed); no `postinstall` hook. |
+| `install:browsers` | `playwright install chromium firefox webkit` (no `--with-deps`: it needs apt and fails on non-Debian hosts). Dependencies are installed separately with `npm install` (`package-lock.json` is not committed); no `postinstall` hook. |
+| `docker:build` | `docker build -t saucedemo-ui-tests .` |
+| `docker:test` | `sh scripts/docker-test.sh`: runs the image (no shared folders), then copies `test-results/`, `playwright-report/` and `allure-results/` out with `docker cp`, so it works with Docker and rootless Podman and the files belong to the host user. Extra flags after `--` reach Playwright; the exit code is the test run's. |
 
 Filters and modes are Playwright flags after `--` (`--grep TC-LOGIN-001`, `--project=firefox`, `--headed`, `--ui`); don't add a script per flag. `engines`: `node >= 22.18.0` (required by Allure 3).
 
@@ -113,6 +118,9 @@ TypeScript 6 initialises class fields before constructor parameter properties: d
 For `src/**/*.ts`: `languageOptions.parserOptions.projectService: true` (type information) and `"@typescript-eslint/no-floating-promises": "error"`, so a page object call without `await` fails lint (`missing-playwright-await` only covers Playwright's own calls). Assertions live in `then*` page methods, so: `"playwright/expect-expect": ["error", { assertFunctionPatterns: ["^then"] }]` (verified to match member calls like `cartPage.thenX()`).
 `.prettierrc`: `{ "trailingComma": "all" }`. `.prettierignore`: `*.md` and report folders.
 
+### `Dockerfile` / `.dockerignore`
+Image `mcr.microsoft.com/playwright:v<@playwright/test version>-noble` (check the tag exists: `curl -s https://mcr.microsoft.com/v2/playwright/tags/list`); `COPY package.json`, `RUN npm install` (no lock file), `COPY . .`, `ENTRYPOINT npx playwright test -c src/config/playwright.config.ts`. `.dockerignore`: `node_modules/`, `package-lock.json`, report folders, `.git/`, `.claude/`, `CLAUDE.md`.
+
 ### `.gitignore`
 `node_modules/`, `package-lock.json`, `test-results/`, `playwright-report/`, `allure-results/`, `allure-report/`.
 
@@ -121,7 +129,7 @@ Objective · Tech stack (with the "Tested with" versions) · Project structure �
 
 ## Verify before reporting done
 1. `npm run typecheck`, `npm run lint` and `npx prettier --check .` pass.
-2. `npm test` runs on both projects; `playwright-report/` and `allure-results/` appear at the root.
+2. `npm test` runs on the three projects (or `npm run docker:test` where WebKit can't run locally); `playwright-report/` and `allure-results/` appear at the root.
 3. Nothing unused: no dead files, exports, dependencies, scripts or config options.
 
 Report back in English: files created/changed, commands run and their result, anything needing the user's decision.

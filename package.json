@@ -11,7 +11,9 @@
     "report": "playwright show-report playwright-report",
     "allure:report": "allure generate allure-results --clean -o allure-report --open",
     "clean:reports": "rm -rf test-results playwright-report allure-results allure-report",
-    "install:browsers": "playwright install chromium firefox"
+    "install:browsers": "playwright install chromium firefox webkit",
+    "docker:build": "docker build -t saucedemo-ui-tests .",
+    "docker:test": "sh scripts/docker-test.sh"
   },
   "devDependencies": {
     "@playwright/test": "1.65.1",

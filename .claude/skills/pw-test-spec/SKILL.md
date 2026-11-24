@@ -68,7 +68,7 @@ test.describe("Login", () => {
 
 ## Done criteria
 - `npm run typecheck` and `npm run lint` pass.
-- The test passes on chromium and firefox, and fails when a check is broken on purpose (checked with `pw-run-report`).
+- The test passes on chromium, firefox and webkit, and fails when a check is broken on purpose (checked with `pw-run-report`).
 - README "Automated scenarios" table updated (ID, title, priority).
 
 Report back in English: test cases automated, files touched, results per browser, and any decision needed.

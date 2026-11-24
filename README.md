@@ -1,16 +1,16 @@
 # SauceDemo — UI Automation
 
 ## Objective
-Automate high-value UI scenarios of [SauceDemo](https://www.saucedemo.com/) as fast, repeatable end-to-end checks on Chromium and Firefox. Each automated test traces to a manual test case (`TC-<FEATURE>-NNN`).
+Automate high-value UI scenarios of [SauceDemo](https://www.saucedemo.com/) as fast, repeatable end-to-end checks on Chromium, Firefox and WebKit. Each automated test traces to a manual test case (`TC-<FEATURE>-NNN`).
 
 ## Tech stack
 - **Language:** TypeScript on Node.js
 - **Framework / runner:** Playwright Test
-- **Browsers:** Chromium, Firefox (desktop)
+- **Browsers:** Chromium, Firefox, WebKit (desktop)
 - **Reports:** Playwright HTML, Allure 3
 - **Code quality:** ESLint (typescript-eslint, eslint-plugin-playwright) + Prettier
 
-Tested with Node.js 26.13, Playwright 1.65.1, TypeScript 6.0.3, ESLint 10.15 and Allure 3.33. `package.json` pins these exact versions, so `npm install` installs the same direct dependencies.
+Tested with Node.js 26.13, Playwright 1.65.1 (Docker image `mcr.microsoft.com/playwright:v1.65.1-noble`), TypeScript 6.0.3, ESLint 10.15 and Allure 3.33. `package.json` pins these exact versions, so `npm install` installs the same direct dependencies.
 
 ## Project structure
 ```
@@ -34,16 +34,23 @@ Install these once on your machine:
 |---|---|---|---|
 | [Node.js](https://nodejs.org/) (includes npm) | 22.18 or later | Runs Playwright, TypeScript and the Allure 3 report | `node -v`, `npm -v` |
 | [Git](https://git-scm.com/) | any | Clone the repository | `git --version` |
+| [Docker](https://docs.docker.com/get-docker/) or Podman (optional) | any | Run the tests in the official Playwright image, with all browser dependencies included | `docker --version` |
 
 Nothing else is needed: Playwright downloads its own browsers, and Allure 3 runs on Node (no Java).
-Linux only: on a minimal Debian/Ubuntu install, if a browser fails to start because of missing system libraries, run `sudo npx playwright install-deps chromium firefox` once.
+Linux only: if a browser fails to start because of missing system libraries (most often WebKit), run `sudo npx playwright install-deps chromium firefox webkit` once (Debian/Ubuntu), or use Docker.
 
 ## Setup
 ```bash
 git clone https://github.com/davidellp1-hue/qualifyze-technical-test.git
 cd qualifyze-technical-test
 npm install                # install the dependencies listed in package.json
-npm run install:browsers   # download Chromium and Firefox (re-run after upgrading Playwright)
+npm run install:browsers   # download Chromium, Firefox and WebKit (re-run after upgrading Playwright)
+```
+
+With Docker instead (no local browsers needed):
+```bash
+npm run docker:build       # build the image (re-run after changing the code)
+npm run docker:test        # run all tests in the container, then copy the reports to the project root
 ```
 
 ## Configuration
@@ -52,9 +59,10 @@ The only setting is the site under test: `BASE_URL` (default `https://www.sauced
 ## Usage
 | Command | Description |
 |---|---|
-| `npm test` | Run all tests on both browsers |
+| `npm test` | Run all tests on the three browsers |
 | `npm test -- --grep "TC-LOGIN-001"` | Run a single test case |
 | `npm test -- --project=firefox` | Run on one browser |
+| `npm run docker:test -- --project=webkit` | Same flags, inside Docker |
 | `npm test -- --headed` / `npm test -- --ui` | Run with a visible browser / in Playwright UI mode |
 | `npm run typecheck` / `npm run lint` | Type check / lint (`npm run lint:fix` to auto-fix) |
 | `npm run clean:reports` | Delete all reports and test artifacts |

@@ -10,7 +10,8 @@ Read `CLAUDE.md` first.
 ## Running
 | Goal | Command |
 |---|---|
-| Everything, both browsers | `npm test` |
+| Everything, three browsers | `npm test` |
+| Everything, in Docker | `npm run docker:build` then `npm run docker:test` (flags after `--`) |
 | By folder | `npm test -- src/features/login` |
 | One test case | `npm test -- --grep "TC-CHK-001"` |
 | One browser | `npm test -- --project=chromium` |
@@ -23,7 +24,7 @@ Read `CLAUDE.md` first.
 When running from Claude: use the `list` output; don't launch interactive modes (`--ui`, `--debug`, `show-report`) unless the user asks.
 
 ## Before calling a new or changed test done
-1. Run it on both browsers (chromium, firefox).
+1. Run it on the three browsers (chromium, firefox, webkit); use Docker where WebKit can't run locally.
 2. Run it with `--repeat-each=3`: it must pass every time.
 3. Make it fail once on purpose (e.g. a wrong expected value or another user), confirm it fails at the right step, then restore it: a check that cannot fail proves nothing.
 
@@ -42,10 +43,10 @@ Never mark a test as passing, skip it, or weaken an assertion to get a green run
 ## Report format (English)
 ```
 Run: <command> · <date>
-| Test | chromium | firefox | Notes |
-|---|---|---|---|
-| [TC-CHK-001] End-to-end purchase ... | Pass | Flaky | Time-out on the first attempt, passed on retry (site slow) |
-| [TC-LOGIN-002] Locked-out user cannot log in | Pass | Pass | |
+| Test | chromium | firefox | webkit | Notes |
+|---|---|---|---|---|
+| [TC-CHK-001] End-to-end purchase ... | Pass | Flaky | Pass | Time-out on the first attempt, passed on retry (site slow) |
+| [TC-LOGIN-002] Locked-out user cannot log in | Pass | Pass | Pass | |
 Totals: N passed · N failed · N flaky
 ```
 - Notes only for non-pass results.
